@@ -1,0 +1,22 @@
+```{r}
+library(arules)
+bread_data<-read.transactions("bread_data.tsv", format ="single", sep = "\t", cols = c(2,3), skip = 1)
+bread_data@itemInfo
+bread_data@itemsetInfo
+
+
+```
+
+```{r}
+library(arulesViz)
+itemFrequencyPlot(bread_data, support = 0.1, cex.names = 0.8)
+mab_bread<-apriori(bread_data, parameter = list(support=10/length(bread_data), confidence=0.5, minlen=2, maxlen=3))
+inspect(mab_bread)
+summary(mab_bread)
+plot(subset(mab_bread, lift>1.1), method="graph")
+```
+
+```{r Filter}
+write(mab_bread, file = "coba_bread.txt")
+```
+
